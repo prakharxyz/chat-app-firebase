@@ -68,9 +68,8 @@ class _AuthScreenState extends State<AuthScreen> {
         title: const Text('Login'),
       ),
       body: SingleChildScrollView(
+        //so that keyboard doesnt ruin user interface
         child: Container(
-          // height: 400,
-          // width: 400,
           margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 100),
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -84,9 +83,12 @@ class _AuthScreenState extends State<AuthScreen> {
                 key: _key,
                 child: Column(
                   children: [
-                    if (_authMode == AuthMode.signup)
+                    if (_authMode ==
+                        AuthMode
+                            .signup) //show username only if we r in sign/up mode
                       TextFormField(
-                        key: ValueKey('username'),
+                        key: ValueKey(
+                            'username'), //so that flutter can easily differentiate b/w contents of formFields. bug fix
                         decoration:
                             const InputDecoration(labelText: 'username'),
                         textInputAction: TextInputAction.next,
@@ -131,6 +133,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       },
                     ),
                     TextButton.icon(
+                        //show different icon or text based on mode selected
                         onPressed: _saveForm,
                         icon: Icon(_authMode == AuthMode.login
                             ? Icons.login
@@ -138,6 +141,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         label: Text(
                             _authMode == AuthMode.login ? 'Login' : 'Sign-up')),
                     TextButton(
+                        //switch _authmode and rebuild the app to reflect changes in ui
                         onPressed: () {
                           setState(() {
                             _authMode == AuthMode.login

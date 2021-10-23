@@ -1,3 +1,4 @@
+import 'package:chat_firebase/Widgets/messages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -15,26 +16,12 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final firestore = FirebaseFirestore.instance;
-  final firestoreRef = FirebaseFirestore.instance
-      .collection('chats')
-      .doc('NLL3Hm8ilsdub8YMwVid');
+  final firestoreRef = FirebaseFirestore.instance.collection('messages');
   final Stream<QuerySnapshot> _firebaseStream =
       FirebaseFirestore.instance.collection('chats').snapshots();
 
   // final snaphots = FirebaseFirestore.instance.collection('chats').get()
   //     as Map<String, dynamic>;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    // Firebase.initializeApp();
-
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,38 +32,31 @@ class _ChatScreenState extends State<ChatScreen> {
             IconButton(
                 onPressed: () {
                   FirebaseAuth.instance.signOut();
+                  //we dont need to rebuild here as we already have stream builder in main file to listen to changes in token
+                  //and as soon as we log out, token becomes null and we get directed to login page
                 },
                 icon: const Icon(Icons.logout))
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
-            onPressed: () => firestore
-                .collection('chats')
-                .add({'data': 'added through app'})),
-        body: StreamBuilder<QuerySnapshot>(
-          stream: _firebaseStream,
-          builder: (c, ss) {
-            if (!ss.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return ListView.builder(
-              itemBuilder: (_, i) {
-                // ss.data!.docs.forEach((document) => Text(document.toString()));
-                return Text(ss.data!.docs[i].toString());
-              },
-              itemCount: ss.data!.docs.length,
-            );
-            // return ListView(
-            //   children: ss.data!.docs.map((document) {
-            //     return Container(
-            //       child: Center(child: Text(document['text1'])),
+        body:
+            // StreamBuilder<QuerySnapshot>(
+            //   stream: _firebaseStream,
+            //   builder: (c, ss) {
+            //     if (!ss.hasData) {
+            //       return const Center(
+            //         child: CircularProgressIndicator(),
+            //       );
+            //     }
+            //     return ListView.builder(
+            //       itemBuilder: (_, i) {
+            //         // ss.data!.docs.forEach((document) => Text(document.toString()));
+            //         return Text(ss.data!.docs[i].toString());
+            //       },
+            //       itemCount: ss.data!.docs.length,
             //     );
-            //   }).toList(),
-            // );
-          },
-        ));
+
+            //   },
+            // )
+            Messages());
   }
 }

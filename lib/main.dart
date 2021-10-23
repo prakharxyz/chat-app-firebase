@@ -16,9 +16,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: StreamBuilder(
+        //to listen to changes in token or authState.
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (c, snapshot) {
           if (snapshot.hasData) return ChatScreen();
+          //if snapshot is not null or has data it means we have required token to get in or we r logged in, so we directly enter chatScreen
+          //otherwise we r required to log in first
           return AuthScreen();
         },
       ),
