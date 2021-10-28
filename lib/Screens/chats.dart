@@ -1,3 +1,4 @@
+import 'package:chat_firebase/Screens/account.dart';
 import 'package:chat_firebase/Widgets/messages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -29,34 +30,42 @@ class _ChatScreenState extends State<ChatScreen> {
         appBar: AppBar(
           title: const Text('Chats'),
           actions: [
-            IconButton(
-                onPressed: () {
+            IconButton(onPressed: () {}, icon: const Icon(Icons.logout))
+          ],
+        ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: CircleAvatar(
+                  child: Icon(
+                    Icons.account_circle,
+                    size: double.maxFinite,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text('Account'),
+                onTap: () {
+                  Navigator.of(context).pushNamed(AccountSettings.routeName);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.logout),
+                title: const Text('Log out'),
+                onTap: () {
                   FirebaseAuth.instance.signOut();
                   //we dont need to rebuild here as we already have stream builder in main file to listen to changes in token
                   //and as soon as we log out, token becomes null and we get directed to login page
                 },
-                icon: const Icon(Icons.logout))
-          ],
+              ),
+            ],
+          ),
         ),
-        body:
-            // StreamBuilder<QuerySnapshot>(
-            //   stream: _firebaseStream,
-            //   builder: (c, ss) {
-            //     if (!ss.hasData) {
-            //       return const Center(
-            //         child: CircularProgressIndicator(),
-            //       );
-            //     }
-            //     return ListView.builder(
-            //       itemBuilder: (_, i) {
-            //         // ss.data!.docs.forEach((document) => Text(document.toString()));
-            //         return Text(ss.data!.docs[i].toString());
-            //       },
-            //       itemCount: ss.data!.docs.length,
-            //     );
-
-            //   },
-            // )
-            Messages());
+        body: Messages());
   }
 }
