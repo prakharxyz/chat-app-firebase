@@ -6,7 +6,8 @@ class UserData with ChangeNotifier {
   final _userData = {
     'uid': '',
     'username': '',
-    'email': ''
+    'email': '',
+    'image': ''
   }; //create an empty map for storing user data
   Map get userData {
     return _userData;
@@ -22,7 +23,9 @@ class UserData with ChangeNotifier {
         .get(); //fetch user data from 'uid' document from the server
     _userData['username'] = userInfo.data()!['username'];
     _userData['email'] = userInfo.data()!['email'];
+    _userData['image'] = userInfo.data()!['image'];
     //finally set the fetched data in user data map in provider
+    notifyListeners();
 
     return _userData;
   }
@@ -33,8 +36,18 @@ class UserData with ChangeNotifier {
         .collection('users')
         .doc(_userData['uid'])
         .update({'username': updatedName});
+    userData['username'] = updatedName;
     //update the existing document with updatedName(old value of key will get overwritten & rest of fields will remain same)
     print('updated successfully ');
+    notifyListeners();
+  }
+
+  Future<void> updateImage(String url) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_userData['uid'])
+        .update({'image': url});
+    _userData['image'] = url;
     notifyListeners();
   }
 }

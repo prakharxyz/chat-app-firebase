@@ -2,6 +2,8 @@ import 'package:chat_firebase/Widgets/message_bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../Providers/chats_provider.dart';
 
 class Messages extends StatelessWidget {
   final _messageController = TextEditingController();
@@ -41,6 +43,8 @@ class Messages extends StatelessWidget {
                       //if snapshot doesnt have data yet show loading spinner
                       return CircularProgressIndicator();
                     }
+                    // Provider.of<ChatsData>(context, listen: false)
+                    //     .storeMessages(snapshot.data!);
                     return SizedBox(
                       //sizedBox to confine height
                       height: 556,

@@ -1,9 +1,11 @@
+import 'package:chat_firebase/Providers/user_provider.dart';
 import 'package:chat_firebase/Screens/account.dart';
 import 'package:chat_firebase/Widgets/messages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -37,14 +39,13 @@ class _ChatScreenState extends State<ChatScreen> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              const DrawerHeader(
+              DrawerHeader(
                 decoration: BoxDecoration(
                   color: Colors.blue,
                 ),
-                child: CircleAvatar(
-                  child: Icon(
-                    Icons.account_circle,
-                    size: double.maxFinite,
+                child: Consumer<UserData>(
+                  builder: (c, prov, ch) => CircleAvatar(
+                    backgroundImage: NetworkImage(prov.userData['image']),
                   ),
                 ),
               ),

@@ -50,7 +50,8 @@ class _AuthScreenState extends State<AuthScreen> {
               .doc(responseData.user!.uid)
               .set({
             'username': authDetails['username'],
-            'email': responseData.user!.email
+            'email': responseData.user!.email,
+            'image': ''
           });
         }
         print(responseData.user!.email);
